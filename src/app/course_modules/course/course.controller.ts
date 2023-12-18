@@ -39,7 +39,29 @@ const getAllCourses = async (req: Request, res: Response) => {
     });
   }
 };
+const getSpecificCourseById = async (req: Request, res: Response) => {
+  try {
+    const courseId = req.params.id;
+    const result = await CourseServices.getSingleCourseFromDb(courseId);
+
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: 'Course fetched successfully!',
+      data: result,
+    });
+  } catch (err) {
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: 'Course Not Found',
+      error: {
+        code: 404,
+        description: 'Course not found!',
+      },
+    });
+  }
+};
 export const CourseControllers = {
   createCourse,
   getAllCourses,
+  getSpecificCourseById,
 };

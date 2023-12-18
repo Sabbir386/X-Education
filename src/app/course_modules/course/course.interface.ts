@@ -1,3 +1,5 @@
+import { Model } from 'mongoose';
+
 export type TSchedule = {
   startDate: string;
   endDate: string;
@@ -15,3 +17,7 @@ export type TCourse = {
   schedule: TSchedule;
   isDeleted?: boolean;
 };
+export type UserMethod = {
+  isUserExists(id: string): Promise<TCourse | null>;
+};
+export type CourseModel = Model<TCourse, Record<string, never>, UserMethod>;

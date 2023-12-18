@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { TCourse, TSchedule } from './course.interface';
+import { CourseModel, TCourse, TSchedule } from './course.interface';
 
 const ScheduleSchema = new Schema<TSchedule>({
   startDate: { type: String, required: true },
@@ -19,4 +19,8 @@ const CourseSchema = new Schema<TCourse>({
   isDeleted: { type: Boolean, default: false },
 });
 
-export const Course = model<TCourse>('Course', CourseSchema);
+CourseSchema.methods.isUserExists = async function (courseId: string) {
+  const exisUser = Course.findOne({ courseId });
+  return exisUser;
+};
+export const Course = model<TCourse, CourseModel>('Course', CourseSchema);
