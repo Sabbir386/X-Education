@@ -13,6 +13,5 @@ export type TCourse = {
   level: string;
   topics: string[];
   schedule: TSchedule;
-
   isDeleted?: boolean;
 };
