@@ -4,6 +4,6 @@ const router = express.Router();
 
 router.post('/', CourseControllers.createCourse);
 router.get('/', CourseControllers.getAllCourses);
-router.get('/:userId', CourseControllers.getSpecificCourseById);
+router.get('/:id', CourseControllers.getSpecificCourseById);
 
 export const CourseRoutes = router;

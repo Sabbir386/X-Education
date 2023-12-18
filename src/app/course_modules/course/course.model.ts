@@ -19,8 +19,8 @@ const CourseSchema = new Schema<TCourse>({
   isDeleted: { type: Boolean, default: false },
 });
 
-CourseSchema.methods.isUserExists = async function (courseId: string) {
-  const exisUser = Course.findOne({ courseId });
-  return exisUser;
-};
-export const Course = model<TCourse, CourseModel>('Course', CourseSchema);
+// CourseSchema.methods.isCourseExists = async function (courseId: string) {
+//   const exisUser = Course.findOne({ courseId });
+//   return exisUser;
+// };
+export const Course = model<TCourse>('Course', CourseSchema);

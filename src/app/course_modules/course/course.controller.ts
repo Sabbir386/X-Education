@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import CourseValidationSchema from './course.validation';
 import { CourseServices } from './course.service';
 import httpStatus from 'http-status';
+import mongoose from 'mongoose';
 
 const createCourse = async (req: Request, res: Response) => {
   try {
@@ -42,19 +43,21 @@ const getAllCourses = async (req: Request, res: Response) => {
 const getSpecificCourseById = async (req: Request, res: Response) => {
   try {
     const courseId = req.params.id;
-    const result = await CourseServices.getSingleCourseFromDb(courseId);
+
+    const objectIdCourseId = new mongoose.Types.ObjectId(courseId);
+    const result = await CourseServices.getSingleCourseFromDb(objectIdCourseId);
 
     res.status(httpStatus.OK).json({
       success: true,
       message: 'Course fetched successfully!',
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: 'Course Not Found',
+      message: err.message || 'Course Not Found',
       error: {
-        code: 404,
+        code: httpStatus.NOT_FOUND,
         description: 'Course not found!',
       },
     });

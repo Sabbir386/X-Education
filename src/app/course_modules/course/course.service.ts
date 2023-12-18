@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { TCourse } from './course.interface';
 import { Course } from './course.model';
 const createCourseIntoDb = async (course: TCourse) => {
@@ -8,16 +9,13 @@ const getAllCourseFromDb = async () => {
   const result = await Course.find();
   return result;
 };
-const getSingleCourseFromDb = async (courseId: string) => {
-  const user = new Course();
-  if (await user.isUserExists(courseId)) {
-    const result = await Course.findOne({ courseId });
-    if (result) {
-      return result;
-    }
-  } else {
-    throw new Error('Course not found In Db');
+const getSingleCourseFromDb = async (courseId: mongoose.Types.ObjectId) => {
+  const result = await Course.findById(courseId);
+  if (!result) {
+    throw new Error('Invalid Course Id');
   }
+  // console.log(result);
+  return result;
 };
 export const CourseServices = {
   createCourseIntoDb,
