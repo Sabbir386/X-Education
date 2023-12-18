@@ -22,6 +22,24 @@ const createCourse = async (req: Request, res: Response) => {
     });
   }
 };
+const getAllCourses = async (req: Request, res: Response) => {
+  try {
+    const result = await CourseServices.getAllCourseFromDb();
+
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: 'Courses fetched successfully!',
+      data: result,
+    });
+  } catch (err) {
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: 'Something went wrong',
+      error: err,
+    });
+  }
+};
 export const CourseControllers = {
   createCourse,
+  getAllCourses,
 };
