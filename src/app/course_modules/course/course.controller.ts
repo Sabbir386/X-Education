@@ -43,7 +43,6 @@ const getAllCourses = async (req: Request, res: Response) => {
 const getSpecificCourseById = async (req: Request, res: Response) => {
   try {
     const courseId = req.params.id;
-
     const objectIdCourseId = new mongoose.Types.ObjectId(courseId);
     const result = await CourseServices.getSingleCourseFromDb(objectIdCourseId);
 
@@ -63,8 +62,35 @@ const getSpecificCourseById = async (req: Request, res: Response) => {
     });
   }
 };
+
+const updateCourseById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    // console.log(courseId);
+    // const objectCourseId = new mongoose.Types.ObjectId(courseId);
+    const courseData = req.body;
+    // console.log(req);
+    const result = await CourseServices.updateCourseFromDb(id, courseData);
+
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: 'Course updated successfully!',
+      data: result,
+    });
+  } catch (err: any) {
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: err.message || 'Invalid Course Id',
+      error: {
+        code: httpStatus.NOT_FOUND,
+        description: 'Course not found!',
+      },
+    });
+  }
+};
 export const CourseControllers = {
   createCourse,
   getAllCourses,
   getSpecificCourseById,
+  updateCourseById,
 };

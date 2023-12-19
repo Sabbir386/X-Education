@@ -17,8 +17,28 @@ const getSingleCourseFromDb = async (courseId: mongoose.Types.ObjectId) => {
   // console.log(result);
   return result;
 };
+const updateCourseFromDb = async (courseId: string, data: object) => {
+  try {
+    // console.log(courseId);
+    const result = await Course.findByIdAndUpdate({ _id: courseId }, data, {
+      new: true,
+    });
+
+    if (!result) {
+      throw new Error('Invalid Course Id');
+    }
+
+    return result;
+  } catch (error) {
+    console.error('Error updating course:', error);
+
+    throw error;
+  }
+};
+
 export const CourseServices = {
   createCourseIntoDb,
   getAllCourseFromDb,
   getSingleCourseFromDb,
+  updateCourseFromDb,
 };
