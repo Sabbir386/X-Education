@@ -17,7 +17,7 @@ export type TCourse = {
   schedule: TSchedule;
   isDeleted?: boolean;
 };
-// export type UserMethod = {
-//   isExists(id: string): Promise<TCourse | null>;
-// };
-export type CourseModel = Model<TCourse, Record<string, never>>;
+export type UserMethod = {
+  isCourseExists(name: string): Promise<TCourse | null>;
+};
+export type CourseModel = Model<TCourse, Record<string, never>, UserMethod>;

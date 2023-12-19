@@ -2,6 +2,7 @@ import httpStatus from 'http-status';
 import { Admin } from './admin.model';
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const createAdmin = async (req: Request, res: Response) => {
   try {
@@ -38,13 +39,18 @@ const login = async (req: Request, res: Response) => {
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
+    const token = jwt.sign(
+      { email: user.email, role: user.role },
+      'secret-key',
+      { expiresIn: '1h' },
+    );
 
+    res.json({ token });
     res.status(200).json({
       success: true,
       message: 'Login Successfull!',
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };

@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 import { TCourse } from './course.interface';
 import { Course } from './course.model';
 const createCourseIntoDb = async (course: TCourse) => {
+  const courseInstance = new Course();
+  if (await courseInstance.isCourseExists(course.name)) {
+    throw new Error('Course Already exists');
+  }
   const result = await Course.create(course);
   return result;
 };

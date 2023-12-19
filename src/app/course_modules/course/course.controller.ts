@@ -16,10 +16,10 @@ const createCourse = async (req: Request, res: Response) => {
       message: 'The course has been added successfully',
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: 'Something went wrong',
+      message: err.message || 'Something went wrong',
       error: err,
     });
   }
