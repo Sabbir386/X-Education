@@ -11,7 +11,7 @@ const ScheduleSchema = new Schema<TSchedule>({
 const CourseSchema = new Schema<TCourse>({
   name: { type: String, required: true },
   description: { type: String, required: true },
-  price: { type: Number, required: true },
+  price: { type: String, required: true },
   duration: { type: String, required: true },
   level: { type: String, required: true },
   topics: { type: [String], required: true },

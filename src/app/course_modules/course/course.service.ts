@@ -14,26 +14,23 @@ const getSingleCourseFromDb = async (courseId: mongoose.Types.ObjectId) => {
   if (!result) {
     throw new Error('Invalid Course Id');
   }
-  // console.log(result);
   return result;
 };
 const updateCourseFromDb = async (courseId: string, data: object) => {
-  try {
-    // console.log(courseId);
-    const result = await Course.findByIdAndUpdate({ _id: courseId }, data, {
-      new: true,
-    });
-
-    if (!result) {
-      throw new Error('Invalid Course Id');
-    }
-
-    return result;
-  } catch (error) {
-    console.error('Error updating course:', error);
-
-    throw error;
+  const result = await Course.findByIdAndUpdate({ _id: courseId }, data, {
+    new: true,
+  });
+  if (!result) {
+    throw new Error('Invalid Course Id');
   }
+  return result;
+};
+const deleteCourseFromDb = async (courseId: string) => {
+  const result = await Course.findByIdAndDelete({ _id: courseId });
+  if (!result) {
+    throw new Error('Invalid Course Id');
+  }
+  return result;
 };
 
 export const CourseServices = {
@@ -41,4 +38,5 @@ export const CourseServices = {
   getAllCourseFromDb,
   getSingleCourseFromDb,
   updateCourseFromDb,
+  deleteCourseFromDb,
 };

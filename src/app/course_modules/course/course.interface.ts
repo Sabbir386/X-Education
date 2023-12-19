@@ -10,7 +10,7 @@ export type TSchedule = {
 export type TCourse = {
   name: string;
   description: string;
-  price: number;
+  price: string;
   duration: string;
   level: string;
   topics: string[];

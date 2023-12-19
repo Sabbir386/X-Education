@@ -9,7 +9,7 @@ export const ScheduleValidationSchema = z.object({
 export const CourseValidationSchema = z.object({
   name: z.string(),
   description: z.string(),
-  price: z.number(),
+  price: z.string(),
   duration: z.string(),
   level: z.string(),
   topics: z.array(z.string()),
