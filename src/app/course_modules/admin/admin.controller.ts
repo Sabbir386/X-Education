@@ -1,12 +1,11 @@
+import httpStatus from 'http-status';
 import { Admin } from './admin.model';
 import { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
 
 const createAdmin = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-
-    // Hash the password before saving it to the database
-
     const admin = new Admin({
       email,
       password: password,
@@ -14,7 +13,36 @@ const createAdmin = async (req: Request, res: Response) => {
     });
 
     await admin.save();
-    res.status(201).json({ message: 'User registered successfully' });
+    res
+      .status(httpStatus.OK)
+      .json({ message: 'Admin registered successfully' });
+  } catch (error) {
+    res
+      .status(httpStatus.INTERNAL_SERVER_ERROR)
+      .json({ error: 'Internal server error' });
+  }
+};
+
+const login = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await Admin.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Login Successfull!',
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
@@ -23,4 +51,5 @@ const createAdmin = async (req: Request, res: Response) => {
 
 export const AdminControllers = {
   createAdmin,
+  login,
 };
