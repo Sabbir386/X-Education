@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { CourseRoutes } from '../course_modules/course/course.route';
-import { AdminRoutes } from '../course_modules/admin/admin.routes';
+import { UserRoutes } from '../course_modules/user/user.routes';
 
 const router = Router();
 
@@ -11,11 +11,11 @@ const courseModulesRoutes = [
   },
   {
     path: '/register',
-    route: AdminRoutes,
+    route: UserRoutes,
   },
   {
     path: '/login',
-    route: AdminRoutes,
+    route: UserRoutes,
   },
 ];
 

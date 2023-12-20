@@ -1,22 +1,20 @@
 import httpStatus from 'http-status';
-import { Admin } from './admin.model';
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { User } from './user.model';
 
-const createAdmin = async (req: Request, res: Response) => {
+const createUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    const admin = new Admin({
+    const user = new User({
       email,
       password: password,
-      role: 'admin',
+      role: 'user',
     });
 
-    await admin.save();
-    res
-      .status(httpStatus.OK)
-      .json({ message: 'Admin registered successfully' });
+    await user.save();
+    res.status(httpStatus.OK).json({ message: 'User registered successfully' });
   } catch (error) {
     res
       .status(httpStatus.INTERNAL_SERVER_ERROR)
@@ -28,34 +26,37 @@ const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
-    const user = await Admin.findOne({ email });
+    const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid username or password' });
+      return res
+        .status(httpStatus.UNAUTHORIZED)
+        .json({ error: 'Invalid username or password' });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ error: 'Invalid username or password' });
+      return res
+        .status(httpStatus.UNAUTHORIZED)
+        .json({ error: 'Invalid username or password' });
     }
     const token = jwt.sign(
       { email: user.email, role: user.role },
       'secret-key',
       { expiresIn: '1h' },
     );
-
-    res.json({ token });
-    res.status(200).json({
+    res.status(httpStatus.OK).json({
       success: true,
       message: 'Login Successfull!',
+      token: token,
     });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-export const AdminControllers = {
-  createAdmin,
+export const userControllers = {
+  createUser,
   login,
 };
